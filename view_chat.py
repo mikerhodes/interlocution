@@ -55,8 +55,8 @@ def stream_model_response():
         num_ctx=min(8192, st.session_state["model_context_length"]),
     )
     for chunk in response:  # prompt eval count is the token count used from the model
-        if chunk.prompt_eval_count is not None:
-            st.session_state["used_tokens"] = chunk.prompt_eval_count + chunk.eval_count
+        # if chunk.prompt_eval_count is not None:
+        #     st.session_state["used_tokens"] = chunk.prompt_eval_count + chunk.eval_count
         yield chunk["message"]["content"]
 
 
@@ -133,9 +133,7 @@ def handle_change_model():
 def _update_context_length(model):
     cg = st.session_state["chat_gateway"]
     m = cg.show(model)
-    model_context_length = m.modelinfo[f"{m.details.family}.context_length"]
-    print(m.details.family, model_context_length)
-    st.session_state["model_context_length"] = model_context_length
+    st.session_state["model_context_length"] = m.context_length
 
 
 #
